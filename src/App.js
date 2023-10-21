@@ -1,38 +1,43 @@
 import React from "react";
+import { connect } from "react-redux";
+import { fetchAPI } from "./redux/actions/fetchActions";
+import { apiSuccess } from "./redux/actions/action";
+import Card from "./components/Card";
 
 
-
-
-// Class Component
 class App extends React.Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      name:'nibash'
-      , number: 0
-    }
+  componentDidMount(){
+    this.props.dispatch(fetchAPI());
   }
-
-  getSnapshotBeforeUpdate(prevProps, nextState){
-      const {number} = nextState;
-      return nextState.number !== number;
+  shouldComponentUpdate(){
+    return true;
   }
-
   render(){
+    const {items} = this.props;
 
-    setTimeout(() =>{
-      this.setState({
-        number:Math.random()
-      })
-    },3000)
-
-    console.log('NUmber here', this.state.number);
-    
     return(
-      <h1>{this.state.number}</h1>
+      <div>
+        <h1>Hi Im Rijubi</h1>
+        {items && items.map((vals) => {return <Card items={vals} />})}
+      </div>
     )
+  }
 }
+
+const MapStateToProps = state => {
+  return {
+    items: state.reducer.items
+    , isLoading: state.reducer.isLoading
+    , error: state.reducer.error
+  }
 }
-export default App;
+
+// const MapDispatchToProps = dispatch =>{
+//   return {
+//     onFetchApi: () => dispatch(fetchAPI())
+//   } 
+// }
+
+export default connect(MapStateToProps)(App);
 
 

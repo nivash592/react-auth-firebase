@@ -4,7 +4,6 @@ import '../App.css';
 
 
 const Card= ({items}) =>{
-    console.log(items);
     return(
         <div className="card"> 
             <h1>Category: {items.category}</h1>
